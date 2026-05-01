@@ -20,6 +20,7 @@
             this.image = image;
             run_animation = 0;
             runIf = 0;
+            speed = 5;
         }
         public Creature(int x, int y, string name, int height, int width, Image image, bool direction, string property, int top, int g, int spaceG, string condition, int proper_height) : this( x,  y,  name,  height,  width,  image,  direction,  property,  top,  g,  spaceG,  condition)
         {
@@ -31,20 +32,21 @@
         public List<string> condition;
         public int proper_height;
 
-        public List<Block> Check_u(List<Block> blocks, int creatures_i, string sposob)
+        public List<Block> Check_block_we_stand(List<Block> blocks, int creatures_i, string sposob)
         {
             for (int r = 0; r < blocks.Count; r++)
             {
-                blocks[r].Check_u(creatures_i, sposob);
+                blocks[r].Delete_block_we_stand(creatures_i, sposob);
             }
             return blocks;
         }
         public List<Block> Dead_fall(List<Block> blocks, int creatures_i)
         {
+            condition.Add("intangible");
             g = 1;
             top = 1500;
             condition.Add("dead_fall");
-            return  Check_u(blocks, creatures_i, "");
+            return  Check_block_we_stand(blocks, creatures_i, "");
         }
 
         public Rectangle DestRect()
@@ -52,11 +54,20 @@
             return new Rectangle(0, 0, width, height);
         }
 
+        public bool Animation(string metod, short triger)
+        {
+            Animation(metod);
+            if (run_animation >= triger) return true;
+            return false;
+        }
+
         public void Animation(string metod)
         {
             run_animation++;
             switch (metod)
             {
+                case "":
+                    return;
                 case "Walk":
                     if (name == "SMB_greenkoopatroopa")
                     {
@@ -66,6 +77,7 @@
                             {
                                 if (runIf == 0) { image = im_gl.SMB_greenkoopatroopa1; runIf = 1; }
                                 else { image = im_gl.SMB_greenkoopatroopa2; runIf = 0; }
+                                run_animation = 0;
                             }
                         }
                         else
@@ -74,6 +86,7 @@
                             {
                                 if (runIf == 0) { image = im_gl.SMB_greenkoopatroopa1_invert; runIf = 1; }
                                 else { image = im_gl.SMB_greenkoopatroopa2_invert; runIf = 0; }
+                                run_animation = 0;
                             }
                         }
                     }
@@ -85,6 +98,7 @@
                             {
                                 if (runIf == 0) { image = im_gl.SMB_greenparatrooper1; runIf = 1; }
                                 else { image = im_gl.SMB_greenparatrooper2; runIf = 0; }
+                                run_animation = 0;
                             }
                         }
                         else
@@ -93,6 +107,7 @@
                             {
                                 if (runIf == 0) { image = im_gl.SMB_greenparatrooper1_invert; runIf = 1; }
                                 else { image = im_gl.SMB_greenparatrooper2_invert; runIf = 0; }
+                                run_animation = 0;
                             }
                         }
                     }

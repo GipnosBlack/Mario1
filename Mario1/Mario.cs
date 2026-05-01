@@ -11,17 +11,18 @@
             this.width = width;
             image = im_gl.Mario;
             direction = true;
-            u = -1;
+            block_we_stand = -1;
             nam = new List<int>();
             run_animation = 0;
             runIf = 0;
+            speed = 1;
         }
 
         public bool TimerRight = false;
         public bool TimerLeft = false;
         public bool TimerSliding = false;
         public bool TimerSpace = false;
-        public bool TimerGravity = false;
+        public bool TimerGravity = true;
         public bool stopForm1_KeyDown = false;
         public bool deadPadeniye = false;
         public int coin = 0;
@@ -36,21 +37,23 @@
 
         
         public string mode = "ordinary";
-        public short speed = 1;
         public bool braking = false;//срабатывает 1 раз
         public bool braking2 = false;//работает пока не затормозит
         public int max_speed = 10;
         public bool acceleration = false;
-        public int top = 845;//высота пола, на котором должен стоять марио
-        public sbyte spaceG = 30;//замедление во время прыжка
+        public int top = 3000;//высота пола, на котором должен стоять марио
+        public sbyte spaceG = 20;//замедление во время прыжка
+        public bool spaceG_bool = false;//для неполных прыжков
+        public int spaceG_max = 15;
         public int g = 1;//ускорение свободного падения
         public bool sits = false;//true - сидит, false - стоит (работает только для больших марио)
         public int intangible = 0;//для неосязаемого марио
         public int pause_atack_fire_bar;
         private Image images_previous;
 
-        public void defines_the_image(string image)
+        public void Defines_the_image(string image)
         {
+            if (deadPadeniye & image != "Dead") return;
             if (image == "Walk")
             {
                 if (direction)
@@ -265,6 +268,7 @@
                 this.image = im_gl.Mario___Dead__1_;
             }
         }
+
         public void Intangible_Mario()
         {
 
@@ -290,7 +294,7 @@
 
         public void Mario_Dead()
         {
-            defines_the_image("Dead");
+            Defines_the_image("Dead");
             deadPadeniye = true;
             stopForm1_KeyDown = true;
             TimerRight = false;
